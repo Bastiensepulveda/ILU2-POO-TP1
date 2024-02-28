@@ -18,14 +18,18 @@ public class Village {
 	}
 	public String installerVendeur(Gaulois vendeur, String produit,int nbProduit) {
 		int numetal;
+		StringBuilder chaine = new StringBuilder();
+		chaine.append(vendeur.getNom()+" cherche un endroit pour vendre "+ nbProduit + produit+"\n");
 		//vendeur cherche un endroit pour vendre nbproduit produit
 		
 		numetal = marche.trouverEtalLibre();
 		marche.utiliserEtal(numetal, vendeur,produit, nbProduit);
 		
+		chaine.append("Le vendeur"+vendeur.getNom()+" vend des "+produit+ " a l etal n°" + numetal+"\n");
 		//Le vendeur vendeur vend des produit à l'étal n°numetal.
 		
-		return null;
+		
+		return chaine.toString();
 	}
 	public String getNom() {
 		return nom;
