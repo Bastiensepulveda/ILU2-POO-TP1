@@ -8,12 +8,25 @@ public class Village {
 	private Chef chef;
 	private Gaulois[] villageois;
 	private int nbVillageois = 0;
-
-	public Village(String nom, int nbVillageoisMaximum) {
+	private Marche marche;
+	
+	public Village(String nom, int nbVillageoisMaximum, int nbEtalsmax) {
 		this.nom = nom;
 		villageois = new Gaulois[nbVillageoisMaximum];
+		Marche marche = new Marche();
+		marche.setmarche(nbEtalsmax);
 	}
-
+	public String installerVendeur(Gaulois vendeur, String produit,int nbProduit) {
+		int numetal;
+		//vendeur cherche un endroit pour vendre nbproduit produit
+		
+		numetal = marche.trouverEtalLibre();
+		marche.utiliserEtal(numetal, vendeur,produit, nbProduit);
+		
+		//Le vendeur vendeur vend des produit à l'étal n°numetal.
+		
+		return null;
+	}
 	public String getNom() {
 		return nom;
 	}
@@ -56,4 +69,75 @@ public class Village {
 		}
 		return chaine.toString();
 	}
+	
+	
+	/*______________________________________________________________*/
+	public class Marche {
+		
+		private Etal[] etal;
+
+		public  void setmarche(int nbetal) {
+			etal = new Etal[nbetal];
+		}
+		
+		public  void utiliserEtal(int indiceEtal, Gaulois vendeur,String produit, int nbProduit) {
+			Etal netal = new Etal();
+			netal.occuperEtal(vendeur,produit,nbProduit);
+			etal[indiceEtal] =  netal;
+		}
+		
+		public  int trouverEtalLibre() {
+			for(int i = 0; i < etal.length; i++) {
+				if(etal[i].isEtalOccupe()) {
+					return i;
+				}
+			}
+			return -1;
+		}
+		
+		public  Etal[] trouverEtals(String produit) {
+			Etal[] etalprdt = new Etal[etal.length];
+			
+			int cpt =0;
+			for(int i = 0; i < etal.length; i++) {
+				if(etal[i].contientProduit(produit)) {
+					etalprdt[cpt] = etal[i];
+					cpt++;
+				}
+			}
+			return etalprdt;
+		}
+		
+		public  Etal trouverVendeur(Gaulois gaulois) {
+			
+			for(int i = 0; i < etal.length; i++) {
+				if(gaulois.equals(etal[i].getVendeur())) {
+					return etal[i];
+				}
+			
+			}
+			return null;
+		}
+		
+		
+		
+		 public void afficherMarche() {
+			 StringBuilder chaine = new StringBuilder();
+			 for(int i = 0; i < etal.length ; i++) {
+				 
+				 chaine.append(etal[i].afficherEtal());
+			 }
+			 chaine.append("il reste "+trouverEtalLibre()+"étals non utilisés dans le marché.\\n");
+			 System.out.println(chaine);
+		 }
+
+		
+		
+	}	 
+		
+		/*______________________________________________________________*/
+	
+
+
+	
 }
